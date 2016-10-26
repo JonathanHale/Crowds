@@ -6,6 +6,14 @@ public class CaptureVideo : MonoBehaviour {
     private string folder;
     public bool isCapturing = false;
 
+    OnStartUp startUp;
+
+    void start()
+    {
+        startUp = GameObject.Find("Main Camera").GetComponent("OnStartUp") as OnStartUp;
+        Time.captureFramerate = startUp.frameRate;
+    }
+
     public void setFolder(string name) {
         folder = name;
 

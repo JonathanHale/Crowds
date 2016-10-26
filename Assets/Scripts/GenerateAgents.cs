@@ -102,6 +102,7 @@ public class GenerateAgents : MonoBehaviour
             if (agentList[agentNum].getStart() == frameCount)
             {
                 agentList[agentNum].create();
+                agentList[agentNum].id = agentNum;
             }
             agentNum++;
         }

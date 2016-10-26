@@ -70,22 +70,28 @@ public class agent : ScriptableObject {
     public void move() {
         Vector3 heading;
 
+        if (id == 0)
+        {
+            Debug.Log("My id is : " + id);
+            Debug.Log(coordinates[curFrame]);
+        }
         if (curFrame + 1 < duration) {
-            heading = deltas[curFrame];
+            heading = deltas[curFrame+1];
 
             float step = distances[curFrame] / Time.deltaTime;
 
             Vector3 newDir = Vector3.RotateTowards(clone.transform.forward, heading, step, 0.0F);
 
             clone.transform.rotation = Quaternion.LookRotation(newDir);
-
-            //var anim = clone.GetComponent<Animator>();
-            //anim.SetFloat("Speed", step);
-            //anim.SetFloat("Heading", heading.x);
+            //clone.transform.Rotate(newDir);
+            var anim = clone.GetComponent<Animator>();
+            anim.SetFloat("Speed", step);
+            anim.SetFloat("Heading", heading.x);
 
             Vector3 position;
             position = coordinates[curFrame++]/10;
-            clone.transform.position = position;
+            //clone.transform.position = position;
+            clone.transform.position = Vector3.MoveTowards(clone.transform.position, position, step);
         } else {
             isActive = false;
             Destroy(clone);
