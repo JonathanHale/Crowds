@@ -55,9 +55,9 @@ public class agent : ScriptableObject {
     }
 
     public void create() {
-        clone = Instantiate(Resources.Load("CrowdAgent", typeof(GameObject)), coordinates[curFrame]/10, Quaternion.identity) as GameObject;
+        clone = Instantiate(Resources.Load("CrowdAgent", typeof(GameObject)), coordinates[curFrame], Quaternion.identity) as GameObject;
         //clone = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        clone.transform.position = coordinates[curFrame]/10;
+        clone.transform.position = coordinates[curFrame];
 
         //Debug.Log(clone.transform.rotation);
         //Quaternion target = Quaternion.Euler(0, 0, 90);
@@ -89,7 +89,7 @@ public class agent : ScriptableObject {
             anim.SetFloat("Heading", heading.x);
 
             Vector3 position;
-            position = coordinates[curFrame++]/10;
+            position = coordinates[curFrame++];
             //clone.transform.position = position;
             clone.transform.position = Vector3.MoveTowards(clone.transform.position, position, step);
         } else {

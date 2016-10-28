@@ -58,16 +58,16 @@ public class GenerateAgents : MonoBehaviour
             agentNum++;
         }
 
-        agentNum = 0;
-        while (agentNum < maxAgents)
-        {
+        //agentNum = 0;
+        //while (agentNum < maxAgents)
+        //{
 
-            if (0 == agentList[agentNum].getStart())
-            {
-                agentList[agentNum].create();
-            }
-            agentNum++;
-        }
+        //    if (0 == agentList[agentNum].getStart())
+        //    {
+        //        agentList[agentNum].create();
+        //    }
+        //    agentNum++;
+        //}
     }
 
     /* Called once per frame.*/
@@ -96,15 +96,15 @@ public class GenerateAgents : MonoBehaviour
      */
     void createAgent()
     {
-        agentNum = 0;
-        for (int count = 0; count < agentFrames.Count; count += 2)
+ //       agentNum = 0;
+        for (agentNum = 0; agentNum < maxAgents; agentNum++)
         {
             if (agentList[agentNum].getStart() == frameCount)
             {
                 agentList[agentNum].create();
                 agentList[agentNum].id = agentNum;
             }
-            agentNum++;
+ //           agentNum++;
         }
     }
 
