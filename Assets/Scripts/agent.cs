@@ -11,6 +11,8 @@ public class agent : ScriptableObject {
     public bool isActive;
 
     int curFrame = 0;
+    int scale = 10;
+
     private int startFrame = 0;
     private int duration = 0;
 
@@ -55,14 +57,9 @@ public class agent : ScriptableObject {
     }
 
     public void create() {
-        clone = Instantiate(Resources.Load("CrowdAgent", typeof(GameObject)), coordinates[curFrame], Quaternion.identity) as GameObject;
-        //clone = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        clone.transform.position = coordinates[curFrame];
+        clone = Instantiate(Resources.Load("CrowdAgent", typeof(GameObject)), coordinates[curFrame]/scale, Quaternion.identity) as GameObject;
 
-        //Debug.Log(clone.transform.rotation);
-        //Quaternion target = Quaternion.Euler(0, 0, 90);
-        //clone.transform.rotation = Quaternion.Lerp(clone.transform.rotation, target, 1);
-        //Debug.Log(clone.transform.rotation);
+        clone.transform.position = coordinates[curFrame]/scale;
 
         isActive = true;
     }
@@ -70,11 +67,6 @@ public class agent : ScriptableObject {
     public void move() {
         Vector3 heading;
 
-        if (id == 0)
-        {
-            Debug.Log("My id is : " + id);
-            Debug.Log(coordinates[curFrame]);
-        }
         if (curFrame + 1 < duration) {
             heading = deltas[curFrame+1];
 
@@ -83,14 +75,12 @@ public class agent : ScriptableObject {
             Vector3 newDir = Vector3.RotateTowards(clone.transform.forward, heading, step, 0.0F);
 
             clone.transform.rotation = Quaternion.LookRotation(newDir);
-            //clone.transform.Rotate(newDir);
             var anim = clone.GetComponent<Animator>();
             anim.SetFloat("Speed", step);
             anim.SetFloat("Heading", heading.x);
 
             Vector3 position;
-            position = coordinates[curFrame++];
-            //clone.transform.position = position;
+            position = coordinates[curFrame++]/scale;
             clone.transform.position = Vector3.MoveTowards(clone.transform.position, position, step);
         } else {
             isActive = false;
