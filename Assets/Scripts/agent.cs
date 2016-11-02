@@ -44,7 +44,6 @@ public class agent : ScriptableObject
 
         for (int i = 0; i < coordinates.Length - 3; i++)
         {
-            //            newCoords.Add(coordinates[i+1]);
             catmullRom(i);
 
             foreach (var item in catPoints)
@@ -54,22 +53,10 @@ public class agent : ScriptableObject
         }
 
         duration = newCoords.Count;
+
         coordinates = new Vector3[duration];
 
-        int count = 0;
-        foreach (var item in newCoords)
-        {
-            coordinates[count] = item;
-        }
         newCoords.CopyTo(coordinates);
-        if (id == 0)
-        {
-            foreach (var item in coordinates)
-            {
-                Debug.Log(item);
-            }
-        }
-
     }
 
     public void setDeltas(List<Vector3> deltas)
@@ -82,7 +69,6 @@ public class agent : ScriptableObject
         {
             deltas.Add(new Vector3(item.x - v3Temp.x, item.y - v3Temp.y, item.z - v3Temp.z));
         }
-//        deltas.CopyTo(0, this.deltas, 0, duration);
     }
 
     public void setDistance(List<float> distances)
@@ -126,19 +112,36 @@ public class agent : ScriptableObject
     public void move()
     {
         Vector3 heading;
+        Vector3 newDir;
+        Vector3 relativePos;
 
         if (curFrame + 1 < duration)
         {
             heading = deltas[curFrame + 1];
 
-            float step = distances[curFrame] / Time.deltaTime;
 
-            Vector3 newDir = Vector3.RotateTowards(clone.transform.forward, heading, step, 0.0F);
+                //Debug.Log(clone.transform.rotation);
+                //newDir = Vector3.RotateTowards(clone.transform.forward, heading, step, 0.0F);
+
+            newDir = coordinates[curFrame+1] - clone.transform.position;
+            Quaternion Q = Quaternion.LookRotation(newDir);
+
+            float dist = Vector3.Distance(coordinates[curFrame + 1], clone.transform.position);
+            float step = 1.0f; //dist * Time.deltaTime;
+
+            clone.transform.rotation = Quaternion.RotateTowards(clone.transform.rotation,Q,step);
+
+                //Debug.Log(clone.transform.rotation);
+
+
+            //Vector3 relativePos = target.position - transform.position;
+            //Quaternion rotation = Quaternion.LookRotation(relativePos);
+            //transform.rotation = rotation;
 
             //clone.transform.rotation = Quaternion.LookRotation(newDir);
-            //var anim = clone.GetComponent<Animator>();
-            //anim.SetFloat("Speed", step);
-            //anim.SetFloat("Heading", heading.x);
+            var anim = clone.GetComponent<Animator>();
+            anim.SetFloat("Speed", step);
+            anim.SetFloat("Heading", heading.x);
 
             Vector3 position;
             position = coordinates[curFrame++] / scale;
