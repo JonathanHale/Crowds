@@ -39,12 +39,12 @@ public class GenerateAgents : MonoBehaviour
         {
             a = ScriptableObject.CreateInstance<agent>();
 
+            a.id = agentNum;
             a.setStart(agentFrames[count]);
             a.setDur(agentFrames[count + 1]);
             a.setCoords(agentCoords);
             a.setDeltas(deltas);
             a.setDistance(distances);
-            a.id = agentNum;
 
             agentList.Add(a);
 
